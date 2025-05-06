@@ -1,0 +1,1 @@
+<view class="login-container data-v-1cf27b2a"><image class="logo data-v-1cf27b2a" src="{{a}}" alt="吉刻转 Logo"></image><view class="text-area data-v-1cf27b2a"><text class="title data-v-1cf27b2a">吉刻转</text></view><button class="wechat-login-button data-v-1cf27b2a" bindtap="{{b}}">使用微信登录</button><button class="guest-login-button data-v-1cf27b2a" bindtap="{{c}}">游客登录</button></view>

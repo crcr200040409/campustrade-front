@@ -1,0 +1,12 @@
+
+.container.data-v-07e72d3c {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;  /* 让整个页面的高度为视口高度 */
+}
+.main-content.data-v-07e72d3c {
+  flex-grow: 1;  /* 让主体内容区域占据剩余的空间 */
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+

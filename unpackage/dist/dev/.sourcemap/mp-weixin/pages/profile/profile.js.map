@@ -1,0 +1,1 @@
+{"version":3,"file":"profile.js","sources":["../../../../../../ProgramFiles/HBuilderX/plugins/uniapp-cli-vite/uniPage:/cGFnZXMvcHJvZmlsZS9wcm9maWxlLnZ1ZQ"],"sourcesContent":["import MiniProgramPage from 'D:/作业/软件工程/课程设计/campustrade/code/campustrade-front/pages/profile/profile.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;AACA,GAAG,WAAW,eAAe;"}

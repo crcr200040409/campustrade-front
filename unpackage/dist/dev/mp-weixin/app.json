@@ -1,38 +1,12 @@
 {
   "pages": [
-    {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "登录",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/home/home",
-      "style": {
-        "navigationBarTitleText": "吉刻转"
-      }
-    },
-    {
-      "path": "pages/sell/sell",
-      "style": {
-        "navigationBarTitleText": "卖闲置"
-      }
-    },
-    {
-      "path": "pages/messages/messages",
-      "style": {
-        "navigationBarTitleText": "消息"
-      }
-    },
-    {
-      "path": "pages/profile/profile",
-      "style": {
-        "navigationBarTitleText": "我的"
-      }
-    }
+    "pages/index/index",
+    "pages/home/home",
+    "pages/sell/sell",
+    "pages/messages/messages",
+    "pages/profile/profile"
   ],
-  "globalStyle": {
+  "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "吉刻转",
     "navigationBarBackgroundColor": "#F8F8F8",
@@ -69,5 +43,6 @@
         "selectedIconPath": "static/profile-icon.png"
       }
     ]
-  }
+  },
+  "usingComponents": {}
 }

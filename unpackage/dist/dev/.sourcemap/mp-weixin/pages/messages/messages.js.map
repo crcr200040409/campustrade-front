@@ -1,0 +1,1 @@
+{"version":3,"file":"messages.js","sources":["../../../../../../ProgramFiles/HBuilderX/plugins/uniapp-cli-vite/uniPage:/cGFnZXMvbWVzc2FnZXMvbWVzc2FnZXMudnVl"],"sourcesContent":["import MiniProgramPage from 'D:/作业/软件工程/课程设计/campustrade/code/campustrade-front/pages/messages/messages.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;AACA,GAAG,WAAW,eAAe;"}
