@@ -14,7 +14,7 @@ const _sfc_main = {
   setup(__props) {
     getApp();
     const goMyCollect = () => {
-      common_vendor.index.__f__("log", "at pages/profile/profile.vue:54", "goMyCollect function called");
+      common_vendor.index.__f__("log", "at pages/profile/profile.vue:53", "goMyCollect function called");
       common_vendor.index.navigateTo({
         url: "/pages/collect/collect"
       });

@@ -4,7 +4,6 @@
     <view class="header">
       <image class="avatar" src="/static/logo.png" />
       <view class="user-info">
-        <text class="username">我是盐津蝦</text>
         <text class="user-id">昵称：xy55537471742</text>
       </view>
       <button class="setting-btn">设置</button>

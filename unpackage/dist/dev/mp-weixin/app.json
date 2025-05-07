@@ -6,7 +6,9 @@
     "pages/messages/messages",
     "pages/profile/profile",
     "pages/search/search",
-    "pages/collect/collect"
+    "pages/collect/collect",
+    "pages/publish/publish",
+    "pages/sale/sale"
   ],
   "window": {
     "navigationBarTextStyle": "black",
