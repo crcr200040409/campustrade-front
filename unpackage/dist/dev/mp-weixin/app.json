@@ -8,7 +8,8 @@
     "pages/search/search",
     "pages/collect/collect",
     "pages/publish/publish",
-    "pages/sale/sale"
+    "pages/mysale/mysale",
+    "pages/chatdetail/chatdetail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -7351,7 +7351,7 @@ function isConsoleWritable() {
 function initRuntimeSocketService() {
   const hosts = "172.23.0.64,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_DSMfM_";
+  const id = "mp-weixin__Nd-lm";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9116,9 +9116,15 @@ const pages = [
     }
   },
   {
-    path: "pages/sale/sale",
+    path: "pages/mysale/mysale",
     style: {
       navigationBarTitleText: ""
+    }
+  },
+  {
+    path: "pages/chatdetail/chatdetail",
+    style: {
+      navigationBarTitleText: "聊天详情"
     }
   }
 ];
@@ -12021,9 +12027,12 @@ exports.f = f$1;
 exports.index = index;
 exports.initVueI18n = initVueI18n;
 exports.n = n$1;
+exports.nextTick$1 = nextTick$1;
 exports.nr = nr;
 exports.o = o$1;
+exports.onMounted = onMounted;
 exports.p = p$1;
+exports.reactive = reactive;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s$1;

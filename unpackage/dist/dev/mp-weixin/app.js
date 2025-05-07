@@ -10,7 +10,8 @@ if (!Math) {
   "./pages/search/search.js";
   "./pages/collect/collect.js";
   "./pages/publish/publish.js";
-  "./pages/sale/sale.js";
+  "./pages/mysale/mysale.js";
+  "./pages/chatdetail/chatdetail.js";
 }
 const _sfc_main = {
   onLaunch: function() {

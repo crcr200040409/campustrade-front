@@ -52,10 +52,17 @@
 		}
 	},
 	{
-		"path" : "pages/sale/sale",
+		"path" : "pages/mysale/mysale",
 		"style" : 
 		{
 			"navigationBarTitleText" : ""
+		}
+	},
+	{
+		"path" : "pages/chatdetail/chatdetail",
+		"style" : 
+		{
+			"navigationBarTitleText" : "聊天详情"
 		}
 	}
   ],
