@@ -7,6 +7,7 @@
     <button class="wechat-login-button" @click="wechatLogin">使用微信登录</button>
     <button class="guest-login-button" @click="guestLogin">游客登录</button>
   </view>
+
 </template>
 
 <script>

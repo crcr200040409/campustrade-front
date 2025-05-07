@@ -19,7 +19,7 @@ const _sfc_main = {
             // 描述用户授权目的
           });
           if (userProfile.userInfo) {
-            common_vendor.index.__f__("log", "at pages/index/index.vue:35", "微信登录成功，userInfo:", userProfile.userInfo);
+            common_vendor.index.__f__("log", "at pages/index/index.vue:36", "微信登录成功，userInfo:", userProfile.userInfo);
             const backendRes = await common_vendor.index.request({
               url: "https://your-backend-url.com/api/login",
               // 替换为您的后端 API 地址
@@ -32,7 +32,7 @@ const _sfc_main = {
               },
               success: (response) => {
                 if (response.data && response.data.openid) {
-                  common_vendor.index.__f__("log", "at pages/index/index.vue:48", "用户 openid:", response.data.openid);
+                  common_vendor.index.__f__("log", "at pages/index/index.vue:49", "用户 openid:", response.data.openid);
                   common_vendor.index.showToast({
                     title: "登录成功",
                     icon: "success"
@@ -48,7 +48,7 @@ const _sfc_main = {
                 }
               },
               fail: (error) => {
-                common_vendor.index.__f__("error", "at pages/index/index.vue:66", "请求失败", error);
+                common_vendor.index.__f__("error", "at pages/index/index.vue:67", "请求失败", error);
                 common_vendor.index.showToast({
                   title: "登录请求失败，请重试",
                   icon: "none"
@@ -68,7 +68,7 @@ const _sfc_main = {
           });
         }
       } catch (err) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:86", "微信登录失败", err);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:87", "微信登录失败", err);
         common_vendor.index.showToast({
           title: "微信登录失败",
           icon: "none"
@@ -77,7 +77,7 @@ const _sfc_main = {
     },
     // 游客登录方法
     guestLogin() {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:97", "游客登录成功");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:98", "游客登录成功");
       common_vendor.index.showToast({
         title: "游客登录成功",
         icon: "success"

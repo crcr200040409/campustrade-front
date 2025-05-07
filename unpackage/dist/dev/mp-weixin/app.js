@@ -7,6 +7,8 @@ if (!Math) {
   "./pages/sell/sell.js";
   "./pages/messages/messages.js";
   "./pages/profile/profile.js";
+  "./pages/search/search.js";
+  "./pages/collect/collect.js";
 }
 const _sfc_main = {
   onLaunch: function() {
@@ -21,8 +23,11 @@ const _sfc_main = {
 };
 function createApp() {
   const app = common_vendor.createSSRApp(_sfc_main);
+  app.use(common_vendor.createPinia());
   return {
-    app
+    app,
+    Pinia: common_vendor.Pinia
+    // 此处必须将 Pinia 返回
   };
 }
 createApp().app.mount("#app");
