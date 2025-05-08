@@ -1,0 +1,1 @@
+{"version":3,"file":"mysale.js","sources":["../../../../../../ProgramFiles/HBuilderX/plugins/uniapp-cli-vite/uniPage:/cGFnZXMvbXlzYWxlL215c2FsZS52dWU"],"sourcesContent":["import MiniProgramPage from 'D:/作业/软件工程/课程设计/campustrade/code/campustrade-front/pages/mysale/mysale.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;AACA,GAAG,WAAW,eAAe;"}
