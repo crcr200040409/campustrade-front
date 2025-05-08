@@ -1,0 +1,16 @@
+
+/* 样式部分，根据需要自行调整 */
+button.data-v-727d09f0 {
+  margin: 20px;
+  padding: 10px;
+  background-color: #007AFF;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+}
+text.data-v-727d09f0 {
+  display: block;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+}

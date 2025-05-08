@@ -1,0 +1,1 @@
+<view class="data-v-727d09f0"><button class="data-v-727d09f0" bindtap="{{a}}">Test API</button><text class="data-v-727d09f0">{{b}}</text></view><view class="data-v-727d09f0"><button class="data-v-727d09f0" bindtap="{{c}}">测试获取 code</button><text class="data-v-727d09f0">获取的 code：{{d}}</text><text class="data-v-727d09f0">获取的 sessionId：{{e}}</text></view>

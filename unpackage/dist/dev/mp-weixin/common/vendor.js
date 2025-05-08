@@ -7351,7 +7351,7 @@ function isConsoleWritable() {
 function initRuntimeSocketService() {
   const hosts = "172.23.0.64,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin__Nd-lm";
+  const id = "mp-weixin_CODOlQ";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9067,6 +9067,24 @@ const Pinia = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePropert
 }, Symbol.toStringTag, { value: "Module" }));
 const pages = [
   {
+    path: "pages/test/test",
+    style: {
+      navigationBarTitleText: "Test Page"
+    }
+  },
+  {
+    path: "pages/productReview/productReview",
+    style: {
+      navigationBarTitleText: ""
+    }
+  },
+  {
+    path: "pages/categoryManage/categoryManage",
+    style: {
+      navigationBarTitleText: ""
+    }
+  },
+  {
     path: "pages/index/index",
     style: {
       navigationBarTitleText: "登录",
@@ -9125,6 +9143,12 @@ const pages = [
     path: "pages/chatdetail/chatdetail",
     style: {
       navigationBarTitleText: "聊天详情"
+    }
+  },
+  {
+    path: "pages/userManage/userManage",
+    style: {
+      navigationBarTitleText: ""
     }
   }
 ];
@@ -12019,6 +12043,7 @@ let tr = new class {
 var nr = tr;
 exports.Pinia = Pinia;
 exports._export_sfc = _export_sfc;
+exports.computed = computed;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
 exports.defineStore = defineStore;
@@ -12037,4 +12062,5 @@ exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s$1;
 exports.t = t$1;
+exports.wx$1 = wx$1;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

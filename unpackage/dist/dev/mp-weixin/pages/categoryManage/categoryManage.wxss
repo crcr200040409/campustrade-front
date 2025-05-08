@@ -1,0 +1,100 @@
+
+.add-button.data-v-a6952639 {
+  background-color: #008bff;
+  color: white;
+  padding: 10px 15px;
+  border: 15px;
+  border-radius: 15px;
+}
+.category-item.data-v-a6952639 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 5px;
+}
+.category-item text.data-v-a6952639 {
+  flex-grow: 1;
+}
+.actions.data-v-a6952639 {
+  display: flex;
+  align-items: center;
+}
+.edit-button.data-v-a6952639, .delete-button.data-v-a6952639 {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.edit-button.data-v-a6952639 {
+  background-color: #f0ad4e;
+  color: white;
+}
+.delete-button.data-v-a6952639 {
+  background-color: #d9534f;
+  color: white;
+}
+.pagination.data-v-a6952639 {
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pagination button.data-v-a6952639 {
+  padding: 5px 15px;
+  margin: 0 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #5bc0de;
+  color: white;
+  cursor: pointer;
+}
+.pagination button.data-v-a6952639:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.modal.data-v-a6952639 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content.data-v-a6952639 {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+}
+.modal-input.data-v-a6952639 {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.modal-actions.data-v-a6952639 {
+  display: flex;
+  justify-content: space-between;
+}
+.add-category-btn.data-v-a6952639, .close-btn.data-v-a6952639 {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.add-category-btn.data-v-a6952639 {
+  background-color: #5bc0de;
+  color: white;
+}
+.close-btn.data-v-a6952639 {
+  background-color: #d9534f;
+  color: white;
+}

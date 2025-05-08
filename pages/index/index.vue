@@ -52,9 +52,9 @@ export default {
                     icon: 'success',
                   });
     
-					 uni.switchTab({
-					   url: '/pages/home/home'
-					 });
+               uni.switchTab({
+                 url: '/pages/home/home'
+               });
 
                 } else {
                   uni.showToast({

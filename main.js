@@ -10,7 +10,6 @@ const app = new Vue({
 })
 app.$mount()
 // #endif
-
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
 import * as Pinia from 'pinia';

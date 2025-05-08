@@ -1,5 +1,8 @@
 {
   "pages": [
+    "pages/test/test",
+    "pages/productReview/productReview",
+    "pages/categoryManage/categoryManage",
     "pages/index/index",
     "pages/home/home",
     "pages/sell/sell",
@@ -9,7 +12,8 @@
     "pages/collect/collect",
     "pages/publish/publish",
     "pages/mysale/mysale",
-    "pages/chatdetail/chatdetail"
+    "pages/chatdetail/chatdetail",
+    "pages/userManage/userManage"
   ],
   "window": {
     "navigationBarTextStyle": "black",

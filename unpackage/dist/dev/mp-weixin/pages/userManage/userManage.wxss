@@ -1,0 +1,19 @@
+
+.search-box.data-v-603ef4d8 {
+  margin-bottom: 15px;
+}
+.search-box input.data-v-603ef4d8 {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.user-list.data-v-603ef4d8 {
+  margin-top: 10px;
+}
+.user-item.data-v-603ef4d8 {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
