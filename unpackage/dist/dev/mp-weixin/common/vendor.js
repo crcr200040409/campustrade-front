@@ -88,6 +88,10 @@ const looseToNumber = (val) => {
   const n2 = parseFloat(val);
   return isNaN(n2) ? val : n2;
 };
+const toNumber = (val) => {
+  const n2 = isString(val) ? Number(val) : NaN;
+  return isNaN(n2) ? val : n2;
+};
 function normalizeStyle(value) {
   if (isArray(value)) {
     const res = {};
@@ -2958,21 +2962,21 @@ function injectHook(type, hook, target = currentInstance, prepend = false) {
     );
   }
 }
-const createHook = (lifecycle) => (hook, target = currentInstance) => (
+const createHook$1 = (lifecycle) => (hook, target = currentInstance) => (
   // post-create lifecycle registrations are noops during SSR (except for serverPrefetch)
   (!isInSSRComponentSetup || lifecycle === "sp") && injectHook(lifecycle, (...args) => hook(...args), target)
 );
-const onBeforeMount = createHook("bm");
-const onMounted = createHook("m");
-const onBeforeUpdate = createHook("bu");
-const onUpdated = createHook("u");
-const onBeforeUnmount = createHook("bum");
-const onUnmounted = createHook("um");
-const onServerPrefetch = createHook("sp");
-const onRenderTriggered = createHook(
+const onBeforeMount = createHook$1("bm");
+const onMounted = createHook$1("m");
+const onBeforeUpdate = createHook$1("bu");
+const onUpdated = createHook$1("u");
+const onBeforeUnmount = createHook$1("bum");
+const onUnmounted = createHook$1("um");
+const onServerPrefetch = createHook$1("sp");
+const onRenderTriggered = createHook$1(
   "rtg"
 );
-const onRenderTracked = createHook(
+const onRenderTracked = createHook$1(
   "rtc"
 );
 function onErrorCaptured(hook, target = currentInstance) {
@@ -5523,6 +5527,27 @@ function vFor(source, renderItem) {
   }
   return ret;
 }
+function withModelModifiers(fn, { number, trim }, isComponent = false) {
+  if (isComponent) {
+    return (...args) => {
+      if (trim) {
+        args = args.map((a2) => a2.trim());
+      } else if (number) {
+        args = args.map(toNumber);
+      }
+      return fn(...args);
+    };
+  }
+  return (event) => {
+    const value = event.detail.value;
+    if (trim) {
+      event.detail.value = value.trim();
+    } else if (number) {
+      event.detail.value = toNumber(value);
+    }
+    return fn(event);
+  };
+}
 const o$1 = (value, key) => vOn(value, key);
 const f$1 = (source, renderItem) => vFor(source, renderItem);
 const s$1 = (value) => stringifyStyle(value);
@@ -5530,6 +5555,7 @@ const e$1 = (target, ...sources) => extend(target, ...sources);
 const n$1 = (value) => normalizeClass(value);
 const t$1 = (val) => toDisplayString(val);
 const p$1 = (props) => renderProps(props);
+const m$1 = (fn, modifiers, isComponent = false) => withModelModifiers(fn, modifiers, isComponent);
 function createApp$1(rootComponent, rootProps = null) {
   rootComponent && (rootComponent.mpType = "app");
   return createVueApp(rootComponent, rootProps).use(plugin);
@@ -7349,9 +7375,9 @@ function isConsoleWritable() {
   return isWritable;
 }
 function initRuntimeSocketService() {
-  const hosts = "172.23.0.64,127.0.0.1";
+  const hosts = "192.168.110.8,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_CODOlQ";
+  const id = "mp-weixin_67Oi0o";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -9065,7 +9091,18 @@ const Pinia = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePropert
   skipHydrate,
   storeToRefs
 }, Symbol.toStringTag, { value: "Module" }));
+const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
+  !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
+};
+const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
 const pages = [
+  {
+    path: "pages/index/index",
+    style: {
+      navigationBarTitleText: "登录",
+      navigationStyle: "custom"
+    }
+  },
   {
     path: "pages/test/test",
     style: {
@@ -9082,13 +9119,6 @@ const pages = [
     path: "pages/categoryManage/categoryManage",
     style: {
       navigationBarTitleText: ""
-    }
-  },
-  {
-    path: "pages/index/index",
-    style: {
-      navigationBarTitleText: "登录",
-      navigationStyle: "custom"
     }
   },
   {
@@ -9147,6 +9177,12 @@ const pages = [
   },
   {
     path: "pages/userManage/userManage",
+    style: {
+      navigationBarTitleText: ""
+    }
+  },
+  {
+    path: "pages/productDetail/productDetail",
     style: {
       navigationBarTitleText: ""
     }
@@ -12051,11 +12087,14 @@ exports.e = e$1;
 exports.f = f$1;
 exports.index = index;
 exports.initVueI18n = initVueI18n;
+exports.m = m$1;
 exports.n = n$1;
 exports.nextTick$1 = nextTick$1;
 exports.nr = nr;
 exports.o = o$1;
+exports.onLoad = onLoad;
 exports.onMounted = onMounted;
+exports.onUnmounted = onUnmounted;
 exports.p = p$1;
 exports.reactive = reactive;
 exports.ref = ref;

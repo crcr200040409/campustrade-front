@@ -1,5 +1,5 @@
 // 全局请求封装
-const base_url = 'http://localhost:8080/campustrade'
+const base_url = 'http://8.134.64.30:8080/second-trade'
 // 需要修改token，和根据实际修改请求头
 export default (params) => {
 	let url = params.url;

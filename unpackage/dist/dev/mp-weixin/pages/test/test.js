@@ -20,27 +20,43 @@ const _sfc_main = {
     };
     const testApi = () => {
       common_vendor.wx$1.login({
-        success: async (res) => {
-          const userCode = res.code;
-          if (userCode) {
-            code.value = userCode;
-            const response2 = await api_request.request({
-              url: "/weixin/sessionId/" + userCode
+        async success(res) {
+          if (res.code) {
+            common_vendor.index.__f__("log", "at pages/test/test.vue:39", "code          " + res.code);
+            common_vendor.wx$1.request({
+              url: "https://example.com/onLogin",
+              data: {
+                code: res.code
+              }
             });
-            if (response2.statusCode === 200) {
-              sessionId.value = response2.data.data;
-              common_vendor.wx$1.showToast({
-                title: "请求成功！",
-                icon: "success"
-              });
-            } else {
-              common_vendor.wx$1.showToast({
-                title: "请求失败！",
-                icon: "error"
+            const sessionId2 = await api_request.request({
+              url: `/user/sessionId/${res.code}`,
+              // 把code拼接到路径中
+              method: "GET"
+            });
+            if (sessionId2) {
+              common_vendor.wx$1.getUserInfo({
+                success: async function(res2) {
+                  const encryptedData = res2.encryptedData;
+                  const iv = res2.iv;
+                  const loginRes = await api_request.request({
+                    url: "/user/login",
+                    method: "POST",
+                    data: {
+                      encryptedData,
+                      iv,
+                      sessionId: sessionId2
+                    }
+                  });
+                  if (loginRes.code) {
+                    common_vendor.index.__f__("error", "at pages/test/test.vue:67", "ans---------------");
+                    common_vendor.index.__f__("log", "at pages/test/test.vue:68", loginRes);
+                  }
+                }
               });
             }
           } else {
-            common_vendor.index.__f__("log", "at pages/test/test.vue:62", "获取用户登录状态失败!" + res.errMsg);
+            common_vendor.index.__f__("log", "at pages/test/test.vue:74", "登录失败！" + res.errMsg);
           }
         }
       });

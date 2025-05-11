@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/test/test",
     "pages/productReview/productReview",
     "pages/categoryManage/categoryManage",
-    "pages/index/index",
     "pages/home/home",
     "pages/sell/sell",
     "pages/messages/messages",
@@ -13,7 +13,8 @@
     "pages/publish/publish",
     "pages/mysale/mysale",
     "pages/chatdetail/chatdetail",
-    "pages/userManage/userManage"
+    "pages/userManage/userManage",
+    "pages/productDetail/productDetail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

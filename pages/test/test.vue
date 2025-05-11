@@ -34,50 +34,48 @@ const testApi1 = ()=>{
 // 测试API函数
 const testApi = () => {
   wx.login({
-    success: async (res) => {
-      const userCode = res.code;  // 获取 code
-      if (userCode) {
-        // 显示code
-        code.value = userCode;
-
-        // 发起请求
-        const response = await request({
-          url: '/weixin/sessionId/' + userCode
+    async success(res) {
+      if (res.code) {
+        console.log("code          "+res.code);
+        //发起网络请求
+        wx.request({
+          url: 'https://example.com/onLogin',
+          data: {
+            code: res.code
+          }
+        })
+        const sessionId = await request({
+          url: `/user/sessionId/${res.code}`, // 把code拼接到路径中
+          method: "GET"
         });
-
-        if (response.statusCode === 200) {
-          // 获取返回的 sessionId
-          sessionId.value = response.data.data;
-          wx.showToast({
-            title: '请求成功！',
-            icon: 'success',
-          });
-        } else {
-          wx.showToast({
-            title: '请求失败！',
-            icon: 'error',
-          });
+        if(sessionId){
+          // 微信授权
+          wx.getUserInfo({
+            success: async function (res) {
+              const encryptedData=res.encryptedData
+              const iv=res.iv
+              const loginRes = await request({
+                url: "/user/login",
+                method: "POST",
+                data: {
+                  encryptedData,
+                  iv,
+                  sessionId
+                }
+              });
+              if(loginRes.code) {
+                console.error("ans---------------")
+                console.log(loginRes);
+              }
+            }
+          })
         }
       } else {
-        console.log("获取用户登录状态失败!" + res.errMsg);
+        console.log('登录失败！' + res.errMsg)
       }
     }
-  });
-  // 使用封装的请求函数发送请求
-  // request({
-  //   url: '/user/test', // 后端接口地址
-  //   method: 'GET',
-  // }).then((data) => {
-  //     // 请求成功后更新响应数据
-  //     response.value = data;
-  //   })
-  //   .catch((error) => {
-  //     // 处理请求错误
-  //     response.value = '请求失败：' + error;
-  //   });
+  })
 };
-
-
 
 </script>
 

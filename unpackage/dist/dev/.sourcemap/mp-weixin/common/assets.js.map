@@ -1,1 +1,1 @@
-{"version":3,"file":"assets.js","sources":["static/logo.png"],"sourcesContent":["export default \"__VITE_ASSET__00f549fc__\""],"names":[],"mappings":";AAAA,MAAe,aAAA;;"}
+{"version":3,"file":"assets.js","sources":["static/logo.png","../../../../../../static/images/avatar.png","../../../../../../static/images/contact.png"],"sourcesContent":["export default \"__VITE_ASSET__00f549fc__\"","export default \"/static/images/avatar.png\"","export default \"/static/images/contact.png\""],"names":[],"mappings":";AAAA,MAAe,eAAA;ACAf,MAAe,aAAA;ACAf,MAAe,aAAA;;;;"}

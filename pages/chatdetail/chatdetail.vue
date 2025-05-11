@@ -2,101 +2,147 @@
   <view class="chat-container">
     <!-- 头部 -->
     <view class="chat-header">
+      <uni-icons type="arrowleft" size="24" color="#333" @click="goBack" class="back-icon"></uni-icons>
       <text class="user-name">{{ userName }}</text>
     </view>
+
     <!-- 消息列表 -->
-    <scroll-view
-        class="message-list"
-        scroll-y
-        :scroll-top="scrollTop"
-        :style="{ height: scrollHeight + 'px' }"
-    >
-      <view
-          v-for="(message, index) in messages"
-          :key="index"
-          class="message-item"
-          :class="message.sender"
-      >
+    <scroll-view class="message-list" scroll-y :scroll-top="scrollTop" :style="{ height: scrollHeight + 'px' }">
+      <view v-for="(message, index) in messages" :key="index" class="message-item" :class="message.sender === myId ? 'me' : 'other'">
         <view class="message-bubble">
-          <text class="message-content">{{ message.content }}</text>
-          <text class="message-time">{{ message.time }}</text>
+          <text class="message-text">{{ message.content }}</text>
+          <text class="message-time">{{ formatTime(message.time) }}</text>
         </view>
       </view>
     </scroll-view>
 
     <!-- 输入区 -->
-    <view class="chat-input">
-      <input
-          v-model="newMessage"
-          type="text"
-          placeholder="请输入消息"
-          :adjust-position="false"
-      @confirm="sendMessage"
-      />
-      <button @click="sendMessage">发送</button>
+    <view class="chat-input-area">
+      <input v-model="newMessage" type="text" placeholder="请输入消息" :adjust-position="false" @confirm="sendMessage" class="message-input" />
+      <button @click="sendMessage" :disabled="!newMessage.trim()" class="send-button">发送</button>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue'
+import {ref, reactive, onMounted, nextTick} from 'vue'
+import {onLoad} from '@dcloudio/uni-app'
+import request from '@/api/request' // 需提前封装好 request 方法
 
-// const openId = uni.getCurrentPages().pop().options.openId
-const openId ="1010"
-const userName = ref('ruichen')
-const messages = reactive([
-  {
-    sender: "me",
-    content: "你好，最近怎么样？",
-    time: "10:30"
-  },
-  {
-    sender: "other",
-    content: "很好，谢谢！",
-    time: "10:31"
-  }
-])
-
-// 新增：滚动控制相关变量
+const messages = reactive([])
+const newMessage = ref('')
 const scrollTop = ref(0)
 const scrollHeight = ref(0)
 
-// 修复3：自动计算可滚动高度
-onMounted(() => {
-  const systemInfo = uni.getSystemInfoSync()
-  const query = uni.createSelectorQuery().in(this)
-  query.select('.chat-header').boundingClientRect()
-  query.select('.chat-input').boundingClientRect()
-  query.exec(res => {
-    const headerHeight = res[0].height
-    const inputHeight = res[1].height
-    scrollHeight.value = systemInfo.windowHeight - headerHeight - inputHeight
-  })
+const myId = ref('')
+const options = ref({})
+const userName = ref('')
+
+onLoad(async (params) => {
+  options.value = params
+  console.log('myId set to:', params.value)
+  userName.value = params.userName || '用户'
+  const userInfo = uni.getStorageSync('userInfo')
+  myId.value = userInfo?.openId || 'unknown_user'
+  console.log('myId set to:', myId.value)
+  await loadMessages()
+  setTimeout(() => {
+    calcScrollHeight()
+  }, 300)
 })
 
-const newMessage = ref('')
-const sendMessage = async () => {
-  if (!newMessage.value.trim()) return
-  messages.push({
-    sender: "me",
-    content: newMessage.value.trim(),
-    time: new Date().toLocaleTimeString('zh', { hour: '2-digit', minute: '2-digit' })
-  })
-
-  newMessage.value = ''
-  await nextTick()
-  scrollTop.value = Date.now()
+// 获取聊天历史
+const loadMessages = async () => {
+  try {
+    const res = await request({
+      url: '/user/listMessage',
+      method: 'POST',
+      data: {
+        senderId: myId.value,
+        receiverId: options.value.sellerId
+      }
+    })
+    console.log("options.value.sellerId----------->", JSON.stringify(options, null, 2));
+    if (res.code === 200 && res.data) {
+      messages.splice(0, messages.length, ...res.data.map(msg => ({
+        sender: msg.senderId,
+        content: msg.messageContent,
+        time: msg.timestamp || new Date()
+      })))
+      scrollToBottom()
+    }
+  } catch (err) {
+    console.error('加载消息失败', err)
+  }
 }
 
-setInterval(() => {
-  if (messages.length % 2 === 0) return
-  messages.push({
-    sender: "other",
-    content: "自动回复：" + new Date().toLocaleTimeString(),
-    time: new Date().toLocaleTimeString('zh', { hour: '2-digit', minute: '2-digit' })
+// 发送消息
+const sendMessage = async () => {
+  const content = newMessage.value.trim()
+  if (!content) return
+  const msg = {
+    sender: myId.value,
+    content,
+    time: new Date()
+  }
+  messages.push(msg)
+  newMessage.value = ''
+  scrollToBottom()
+  try {
+    const res=await request({
+      url: '/user/sendMessage',
+      method: 'POST',
+      data: {
+        senderId: myId.value,
+        receiverId: options.value.sellerId,
+        messageContent: content
+      }
+    })
+    console.error('sendMessage---------->', res)
+  } catch (err) {
+    console.error('发送失败', err)
+    uni.showToast({title: '消息发送失败', icon: 'none'})
+  }
+}
+
+// 滚动到底部
+const scrollToBottom = () => {
+  nextTick(() => {
+    scrollTop.value = 999999
   })
-  scrollTop.value = Date.now()
-}, 3000)
+}
+
+// 时间格式化
+const formatTime = (date) => {
+  if (!date) return ''
+  const d = new Date(date)
+  return d.toLocaleTimeString('zh', {hour: '2-digit', minute: '2-digit'})
+}
+
+// 高度计算
+const calcScrollHeight = () => {
+  nextTick(() => {
+    const systemInfo = uni.getSystemInfoSync()
+    const query = uni.createSelectorQuery()
+    query.select('.chat-header').boundingClientRect()
+    query.select('.chat-input-area').boundingClientRect()
+    query.exec(res => {
+      if (res && res[0] && res[1]) {
+        const headerHeight = res[0].height || 50
+        const inputHeight = res[1].height || 60
+        scrollHeight.value = systemInfo.windowHeight - headerHeight - inputHeight
+      } else {
+        // 默认值，防止计算失败
+        scrollHeight.value = systemInfo.windowHeight - 110 // 50(header) + 60(input)
+      }
+    })
+  })
+}
+
+// 返回
+const goBack = () => {
+  uni.navigateBack()
+}
 </script>
 
 <style lang="scss">
@@ -104,13 +150,19 @@ setInterval(() => {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .chat-header {
+  display: flex;
+  align-items: center;
   padding: 15px;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+
+  .back-icon {
+    margin-right: 10px;
+  }
 
   .user-name {
     font-size: 18px;
@@ -121,8 +173,9 @@ setInterval(() => {
 
 .message-list {
   flex: 1;
-  padding: 15px;
+  padding: 10px 15px;
   box-sizing: border-box;
+  background-color: #f5f5f5;
 }
 
 .message-item {
@@ -131,35 +184,40 @@ setInterval(() => {
   &.me {
     display: flex;
     justify-content: flex-end;
+
+    .message-bubble {
+      background-color: #1d9bf0;
+      border-top-right-radius: 0;
+
+      .message-text {
+        color: #fff;
+      }
+
+      .message-time {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
   }
 
   &.other {
     display: flex;
     justify-content: flex-start;
+
+    .message-bubble {
+      background-color: #fff;
+      border-top-left-radius: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
 .message-bubble {
   max-width: 70%;
-  padding: 12px 15px;
+  padding: 10px 12px;
   border-radius: 8px;
-  position: relative;
-
-  .me & {
-    background: #1d9bf0;
-    color: white;
-    border-bottom-right-radius: 2px;
-  }
-
-  .other & {
-    background: white;
-    color: #333;
-    border-bottom-left-radius: 2px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
 }
 
-.message-content {
+.message-text {
   font-size: 16px;
   line-height: 1.4;
 }
@@ -167,40 +225,37 @@ setInterval(() => {
 .message-time {
   display: block;
   font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  margin-top: 5px;
+  margin-top: 4px;
   text-align: right;
-
-  .other & {
-    color: #666;
-  }
+  color: #999;
 }
 
-.chat-input {
+.chat-input-area {
   display: flex;
   padding: 10px;
-  background: white;
+  background-color: #fff;
   border-top: 1px solid #eee;
 
-  input {
+  .message-input {
     flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
+    padding: 8px 12px;
+    background-color: #f5f5f5;
     border-radius: 20px;
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
-  button {
-    background: #1d9bf0;
-    color: white;
+  .send-button {
+    background-color: #1d9bf0;
+    color: #fff;
     border: none;
     border-radius: 20px;
     padding: 0 20px;
     font-size: 14px;
 
-    &:active {
-      opacity: 0.8;
+    &:disabled {
+      background-color: #ccc;
+      color: #999;
     }
   }
 }

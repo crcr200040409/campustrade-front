@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
-const base_url = "http://localhost:8080/campustrade";
+const base_url = "http://8.134.64.30:8080/second-trade";
 const request = (params) => {
   let url = params.url;
   let method = params.method || "get";

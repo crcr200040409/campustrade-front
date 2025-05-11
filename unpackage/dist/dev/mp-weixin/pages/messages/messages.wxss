@@ -1,4 +1,9 @@
 
-.container uni-list-chat {
-  cursor: pointer;
+.container.data-v-ecc172b4 {
+  padding: 10rpx;
+}
+.empty.data-v-ecc172b4 {
+  text-align: center;
+  color: #999;
+  margin-top: 100rpx;
 }

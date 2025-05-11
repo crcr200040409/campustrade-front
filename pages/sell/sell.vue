@@ -9,13 +9,13 @@
     <scroll-view class="form-container" scroll-y>
       <!-- 商品图片上传 -->
       <view class="upload-section">
-        <text class="section-title">上传商品图片(最多9张)</text>
+        <text class="section-title">上传商品图片(最多1张)</text>
         <view class="image-grid">
           <view class="image-item" v-for="(img, index) in images" :key="index">
             <image :src="img" mode="aspectFill" class="preview-image"></image>
             <view class="delete-btn" @click="removeImage(index)">×</view>
           </view>
-          <view class="image-item add-btn" @click="chooseImage" v-if="images.length < 9">
+          <view class="image-item add-btn" @click="chooseImage" v-if="images.length < 1">
             <view class="add-icon">+</view>
           </view>
         </view>
@@ -32,18 +32,18 @@
           <text class="item-label">商品描述</text>
           <textarea class="item-textarea" placeholder="请详细描述商品情况" v-model="form.description"></textarea>
         </view>
+
+
         <view class="form-item">
           <text class="item-label">商品分类</text>
-          <view class="checkbox-group">
-            <label v-for="(category, index) in categories" :key="index" class="checkbox-item">
-              <checkbox
-                  :value="category"
-                  :checked="form.categories.includes(category)"
-                  @change="handleCategoryChange($event, category)"
-                  :id="'category-' + index"
-              >
-                {{ category }}
-              </checkbox>
+          <view class="radio-group">
+            <label v-for="(category, index) in categories" :key="index" class="radio-item">
+              <radio
+                  :value="category.id"
+                  :checked="form.categoryId === category.id"
+                  @click="handleCategoryChange(category.id)"
+              />
+              {{ category.name }}
             </label>
           </view>
         </view>
@@ -64,76 +64,112 @@
   </view>
 </template>
 
+
 <script setup>
 import { ref } from 'vue'
-
+import request from '@/api/request.js';
 // 表单数据
 const form = ref({
   title: '',
   description: '',
-  categories: [],
-  Price: '',
-  contact: ''
+  categoryId: 1,
+  Price: ''
 })
-
+const handleCategoryChange = (categoryId) => {
+  console.log("选中了分类ID:", categoryId);
+  form.value.categoryId = categoryId;
+  console.log("当前form.categoryId:", form.value.categoryId);
+};
 const images = ref([]) // 商品图片
-const categories = ref(['数码电子', '服饰鞋包', '图书教材', '家居生活', '美妆个护', '运动户外', '其他'])
-
+const categories = ref([
+  { id: 1, name: '数码电子', description: '电子产品' },
+  { id: 2, name: '图书教材', description: '书籍' },
+  { id: 3, name: '家居生活', description: '家居用品' },
+  { id: 4, name: '运动户外', description: '运动器材' }
+])
 // 选择图片
 const chooseImage = () => {
   uni.chooseImage({
-    count: 9 - images.value.length,
+    count: 1,  // 只选择一张图片
     sizeType: ['compressed'],
     sourceType: ['album', 'camera'],
     success: (res) => {
-      images.value = images.value.concat(res.tempFilePaths)
+      // 获取选择的图片
+      images.value = [res.tempFilePaths[0]]; // 只保留最新选择的图片
     }
-  })
+  });
 }
-const handleCategoryChange = (e, category) => {
-  const checked = e.detail.value; // 获取复选框当前的选中状态 (true 或 false)
-  if (checked) {
-    // 如果复选框被选中，添加到 categories 数组中
-    if (!form.value.categories.includes(category)) {
-      form.value.categories.push(category);
-    }
-  } else {
-    // 如果复选框被取消选中，从 categories 数组中移除该分类
-    form.value.categories = form.value.categories.filter(c => c !== category);
-  }
-};
 
 // 删除图片
 const removeImage = (index) => {
   images.value.splice(index, 1)
 }
 
-// 分类选择
-const categoryChange = (e) => {
-  form.value.category = categories.value[e.detail.value]
-}
 
-// 提交表单
-const submitForm = () => {
+const submitForm = async () => {
+  // console.log("updatedUserInfo----------->", JSON.stringify(form, 2));
   if (!form.value.title) {
-    uni.showToast({title: '请填写商品名称', icon: 'none'})
-    return
+    uni.showToast({ title: '请填写商品名称', icon: 'none' });
+    return;
   }
   if (images.value.length === 0) {
-    uni.showToast({title: '请上传商品图片', icon: 'none'})
-    return
+    uni.showToast({ title: '请上传商品图片', icon: 'none' });
+    return;
+  }
+  if (!form.value.Price) {
+    uni.showToast({ title: '请输入商品价格', icon: 'none' });
+    return;
+  }
+  if (!form.value.categoryId) {
+    uni.showToast({ title: '请选择商品分类', icon: 'none' });
+    return;
   }
 
-  // 这里添加提交逻辑
-  uni.showLoading({title: '发布中...'})
-  setTimeout(() => {
-    uni.hideLoading()
-    uni.showToast({title: '发布成功'})
-    setTimeout(() => {
-      uni.navigateBack()
-    }, 1500)
-  }, 2000)
-}
+  // 从缓存中获取 openId
+  const openId = uni.getStorageSync('userInfo')?.openId;
+  if (!openId) {
+    uni.showToast({ title: '未找到用户信息，请先登录', icon: 'none' });
+    return;
+  }
+
+  // 准备提交的数据
+  const commodityData = {
+    commodityName: form.value.title,
+    commodityPhoto: images.value[0],  // 使用上传的第一张图片
+    commodityDescription: form.value.description,
+    labelId: form.value.categoryId,  // 使用单一的分类ID
+    commodityPrice: parseFloat(form.value.Price),
+    openId: openId
+  };
+
+  // 调用接口提交数据
+  try {
+    const res = await request({
+      url: '/commodity/addCommodity',
+      method: 'POST',
+      data: commodityData
+    });
+    if (res.code === 200) {
+      uni.showToast({
+        title: '发布成功',
+        icon: 'success'
+      });
+
+    } else {
+      uni.showToast({
+        title: '发布失败',
+        icon: 'none'
+      });
+    }
+  } catch (error) {
+    console.error('发布商品失败', error);
+    uni.showToast({
+      title: '发布失败',
+      icon: 'none'
+    });
+  }
+};
+
 </script>
 
 <style>

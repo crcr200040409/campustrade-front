@@ -1,83 +1,68 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+const api_request = require("../../api/request.js");
 const _sfc_main = {
-  data() {
-    return {};
-  },
-  methods: {
-    // 微信登录方法
-    // 微信登录方法
-    async wechatLogin() {
-      try {
-        const res = await common_vendor.index.login({
-          provider: "weixin"
-        });
-        if (res.code) {
-          const userProfile = await common_vendor.index.getUserProfile({
-            desc: "获取你的公开信息"
-            // 描述用户授权目的
-          });
-          if (userProfile.userInfo) {
-            common_vendor.index.__f__("log", "at pages/index/index.vue:36", "微信登录成功，userInfo:", userProfile.userInfo);
-            const backendRes = await common_vendor.index.request({
-              url: "https://your-backend-url.com/api/login",
-              // 替换为您的后端 API 地址
-              method: "POST",
+  __name: "index",
+  setup(__props) {
+    const wechatLogin = () => {
+      common_vendor.wx$1.login({
+        async success(res) {
+          if (res.code) {
+            common_vendor.index.__f__("log", "at pages/index/index.vue:19", "code          " + res.code);
+            common_vendor.wx$1.request({
+              url: "https://example.com/onLogin",
               data: {
-                code: res.code,
-                // 将 code 传递给服务器
-                userInfo: userProfile.userInfo
-                // 传递用户信息
-              },
-              success: (response) => {
-                if (response.data && response.data.openid) {
-                  common_vendor.index.__f__("log", "at pages/index/index.vue:49", "用户 openid:", response.data.openid);
-                  common_vendor.index.showToast({
-                    title: "登录成功",
-                    icon: "success"
-                  });
-                  common_vendor.index.switchTab({
-                    url: "/pages/home/home"
-                  });
-                } else {
-                  common_vendor.index.showToast({
-                    title: response.data.errmsg || "登录失败",
-                    icon: "none"
-                  });
-                }
-              },
-              fail: (error) => {
-                common_vendor.index.__f__("error", "at pages/index/index.vue:67", "请求失败", error);
-                common_vendor.index.showToast({
-                  title: "登录请求失败，请重试",
-                  icon: "none"
-                });
+                code: res.code
               }
             });
-          } else {
-            common_vendor.index.showToast({
-              title: "用户未授权",
-              icon: "none"
+            const sessionId = await api_request.request({
+              url: `/user/sessionId/${res.code}`,
+              // 把code拼接到路径中
+              method: "GET"
             });
+            if (sessionId) {
+              common_vendor.wx$1.getUserInfo({
+                success: async function(res2) {
+                  const encryptedData = res2.encryptedData;
+                  const iv = res2.iv;
+                  const loginRes = await api_request.request({
+                    url: "/user/login",
+                    method: "POST",
+                    data: {
+                      encryptedData,
+                      iv,
+                      sessionId
+                    }
+                  });
+                  if (loginRes.code == 200) {
+                    common_vendor.index.showToast({
+                      title: "登录成功",
+                      icon: "success"
+                    });
+                    const userData = loginRes.data;
+                    common_vendor.index.setStorageSync("userInfo", userData);
+                    common_vendor.index.switchTab({
+                      url: "/pages/home/home"
+                    });
+                    common_vendor.index.__f__("log", "at pages/index/index.vue:58", loginRes);
+                  } else {
+                    common_vendor.index.showToast({
+                      title: "登录失败",
+                      icon: "error"
+                    });
+                  }
+                }
+              });
+            }
+          } else {
+            common_vendor.index.__f__("log", "at pages/index/index.vue:69", "登录失败！" + res.errMsg);
           }
-        } else {
-          common_vendor.index.showToast({
-            title: "微信登录失败",
-            icon: "none"
-          });
         }
-      } catch (err) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:87", "微信登录失败", err);
-        common_vendor.index.showToast({
-          title: "微信登录失败",
-          icon: "none"
-        });
-      }
-    },
-    // 游客登录方法
-    guestLogin() {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:98", "游客登录成功");
+      });
+    };
+    const guestLogin = () => {
+      common_vendor.index.__f__("log", "at pages/index/index.vue:77", "游客登录成功");
       common_vendor.index.showToast({
         title: "游客登录成功",
         icon: "success"
@@ -85,16 +70,16 @@ const _sfc_main = {
       common_vendor.index.switchTab({
         url: "/pages/home/home"
       });
-    }
+    };
+    return (_ctx, _cache) => {
+      return {
+        a: common_assets._imports_0,
+        b: common_vendor.o(wechatLogin),
+        c: common_vendor.o(guestLogin)
+      };
+    };
   }
 };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return {
-    a: common_assets._imports_0,
-    b: common_vendor.o((...args) => $options.wechatLogin && $options.wechatLogin(...args)),
-    c: common_vendor.o((...args) => $options.guestLogin && $options.guestLogin(...args))
-  };
-}
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-1cf27b2a"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"]]);
 wx.createPage(MiniProgramPage);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/index/index.js.map

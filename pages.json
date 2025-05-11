@@ -1,7 +1,13 @@
 {
   "pages": [
     {
-      "path": "pages/test/test", 
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },{
+      "path": "pages/test/test",
       "style": {
         "navigationBarTitleText": "Test Page"
       }
@@ -18,13 +24,6 @@
       "style" :
       {
         "navigationBarTitleText" : ""
-      }
-    },
-    {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "登录",
-        "navigationStyle": "custom"
       }
     },
     {
@@ -91,6 +90,13 @@
 		{
 			"navigationBarTitleText" : ""
 		}
+	},
+	{
+		"path" : "pages/productDetail/productDetail",
+		"style" : 
+		{
+			"navigationBarTitleText" : ""
+		}
 	}
   ],
   "globalStyle": {
@@ -100,38 +106,38 @@
     "backgroundColor": "#F8F8F8"
   },
   "tabBar": {
-    "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/home/home",
-        "text": "首页",
-        "iconPath": "static/home-icon.png",
-        "selectedIconPath": "static/home-icon.png"
-      },
-      {
-        "pagePath": "pages/sell/sell",
-        "text": "卖闲置",
-        "iconPath": "static/sell-icon.png",
-        "selectedIconPath": "static/sell-icon.png"
-      },
-      {
-        "pagePath": "pages/messages/messages",
-        "text": "消息",
-		
-        "iconPath": "static/message-icon.png",
-        "selectedIconPath": "static/message-icon.png"
-      },
-      {
-        "pagePath": "pages/profile/profile",
-        "text": "我的",
-        "iconPath": "static/profile-icon.png",
-        "selectedIconPath": "static/profile-icon.png"
-      }
-    ]
-  },
+      "color": "#7A7E83",
+      "selectedColor": "#3cc51f",
+      "borderStyle": "black",
+      "backgroundColor": "#ffffff",
+      "list": [
+        {
+          "pagePath": "pages/home/home",
+          "text": "首页",
+          "iconPath": "static/home-icon.png",
+          "selectedIconPath": "static/home-icon.png"
+        },
+        {
+          "pagePath": "pages/sell/sell",
+          "text": "卖闲置",
+          "iconPath": "static/sell-icon.png",
+          "selectedIconPath": "static/sell-icon.png"
+        },
+        {
+          "pagePath": "pages/messages/messages",
+          "text": "消息",
+  		
+          "iconPath": "static/message-icon.png",
+          "selectedIconPath": "static/message-icon.png"
+        },
+        {
+          "pagePath": "pages/profile/profile",
+          "text": "我的",
+          "iconPath": "static/profile-icon.png",
+          "selectedIconPath": "static/profile-icon.png"
+        }
+      ]
+    },
   "easycom": {
 	"autoscan": true,
 	"custom": {

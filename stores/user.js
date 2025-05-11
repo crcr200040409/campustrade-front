@@ -81,7 +81,7 @@ export const useUserStore = defineStore('user', {
         // 获取最近的搜索记录
         getRecentSearches: (state) => state.recentSearches
     },
-    // 持久化配置（如果需要）
+    // 持久化配置
     persist: {
         enabled: true,
         strategies: [
